@@ -1,0 +1,22 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.10",
+  "base_commit_sha": "ca529526947f908f9e4764282082df15f380d355",
+  "prompts": {
+    "3621a0d94d0e70d7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7548e98a-c3e7-4a21-afe5-aabcfb38db4d",
+        "model": "kimi-k2.5"
+      },
+      "human_author": "Haven-1999",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 10,
+      "overriden_lines": 0,
+      "messages_url": "https://gitai.gz.cvte.cn/cas/ae2db8a9928d10e561f9f1337baca3ed91d425c5007d3d216aa0325646acebb8"
+    }
+  }
+}
