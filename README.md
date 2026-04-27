@@ -19,7 +19,6 @@ A lightweight, local AI Agent CLI built with **Claude Agent SDK**.
 ```
 claude-local-agent/
 ├── skills/             # All skills go here (auto-scanned)
-│   ├── superpowers/    # Example official skill
 │   └── your-skill/     # Add any new skill here
 ├── claude_service.py   # Main agent (auto-loads skills)
 ├── .env.example        # Env template
