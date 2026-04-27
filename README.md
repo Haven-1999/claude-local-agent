@@ -1,163 +1,166 @@
-# Claude Agent SDK 本地部署与打包指南
-基于 Claude Agent SDK 构建的本地 AI Agent，集成 `superpowers` 技能包，支持命令行交互、实时反馈与跨设备打包分发。
+# Claude Local Agent CLI
+A local-executable AI Agent command-line tool built on the Claude Agent SDK, with native `superpowers` skill pack integration, real-time execution feedback, and one-click packaging & distribution capabilities.
 
 ---
 
-## 📋 功能特性
-- 🔒 **数据安全**：所有工具调用本地执行，仅任务描述与 AI 思考经过 Claude API
-- 🛠️ **技能扩展**：原生集成 `superpowers` 技能包，支持自定义技能开发
-- 💬 **实时反馈**：提供思考过程、工具调用、心跳提示等全流程状态
-- ⏱️ **耗时统计**：自动记录任务执行耗时
-- 📦 **可打包分发**：支持打包为独立可执行文件，目标设备无需安装 Python/Claude SDK
+## 📋 Features
+- 🔒 **Data Security & Privacy**: All tool calls and code operations run locally on your device, only task prompts and AI thinking flow are sent to the Claude API
+- 🛠️ **Extensible Skills**: Native integration with the `superpowers` skill pack, with full support for custom skill development
+- 💬 **Real-time Feedback**: Full lifecycle status prompts, including AI thinking flow, tool call details, heartbeat prompts for long-running tasks
+- ⏱️ **Execution Metrics**: Auto-calculated and displayed task execution time
+- 📦 **Portable Packaging**: Support for packaging into standalone executable files, no Python/Claude SDK installation required on target devices
+- 🚀 **Lightweight & Fast**: Minimal dependencies, quick startup, and low resource consumption
 
 ---
 
-## 📦 前置要求
-| 依赖 | 版本要求 | 说明 |
-|------|----------|------|
-| Python | 3.10 ~ 3.12 | 核心运行环境 |
-| Node.js | 20+ | `superpowers` 技能包运行环境 |
-| Homebrew | 最新版 | macOS 包管理器（用于安装 Python/Node.js） |
-| Git | 最新版 | 代码版本管理 |
+## 📦 Prerequisites
+| Dependency | Version Requirement | Description |
+|------------|----------------------|-------------|
+| Python     | 3.10 ~ 3.12          | Core runtime environment |
+| Node.js    | 20+                  | Runtime for the `superpowers` skill pack |
+| Git        | Latest               | For code version management and repository cloning |
+| Homebrew   | Latest               | macOS package manager (for installing Python/Node.js) |
 
 ---
 
-## 🚀 快速开始
-### 1. 克隆仓库
+## 🚀 Quick Start
+### 1. Clone the Repository
 ```bash
-git clone <your-repo-url>
-cd claude-agent-mac
+git clone https://github.com/Haven-1999/claude-local-agent.git
+cd claude-local-agent
 ```
 
-### 2. 安装 Python 依赖
+### 2. Install Python Dependencies
 ```bash
-# 创建虚拟环境
+# Create and activate virtual environment
 python3.11 -m venv .venv
-
-# 激活虚拟环境
 source .venv/bin/activate
 
-# 安装依赖
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 3. 配置环境变量
-复制 `.env.example` 为 `.env` 并填入你的配置：
+### 3. Configure Environment Variables
+Copy the example environment file and fill in your configuration:
 ```bash
 cp .env.example .env
-open .env
 ```
 
-`.env` 配置示例：
+`.env` configuration template:
 ```env
-# 第三方 Claude 配置
+# Third-party Claude API Configuration
 ANTHROPIC_API_KEY=your-api-key-here
 ANTHROPIC_BASE_URL=https://your-proxy-url/v1
 MODEL_NAME=claude-3-5-sonnet-20241022
 ```
 
-### 4. 准备 `superpowers` 技能包
+### 4. Prepare the `superpowers` Skill Pack
 ```bash
-# 克隆 superpowers 仓库到 skills 目录
+# Clone the superpowers repository
 git clone https://github.com/your-org/superpowers.git ./superpowers
 
-# 安装 superpowers 依赖（如果需要）
+# Install dependencies for superpowers (if required)
 cd superpowers
 npm install
 cd ..
 ```
 
-### 5. 运行项目
+### 5. Run the Project
 ```bash
-python claude_service.py "查看当前目录文件"
+python claude_service.py "List files in the current directory"
 ```
 
 ---
 
-## 📖 使用指南
-### 基础使用
+## 📖 Usage Guide
+### Basic Usage
 ```bash
-python claude_service.py "你的任务描述"
+python claude_service.py "your task description here"
 ```
 
-### 调用技能
-使用 `/skill-技能名` 格式调用 `superpowers` 技能：
+### Call Skills
+Use the `/skill-skill-name` format to call `superpowers` skills:
 ```bash
-# 调用单个技能
-python claude_service.py "帮我头脑风暴一个 AI 项目 /skill-brainstorming"
+# Call a single skill
+python claude_service.py "Brainstorm an AI project idea /skill-brainstorming"
 
-# 调用多个技能
-python claude_service.py "写测试用例并重构代码 /skill-test-driven-development /skill-refactor"
+# Call multiple skills
+python claude_service.py "Write test cases and refactor code /skill-test-driven-development /skill-refactor"
 ```
 
 ---
 
-## 📦 打包分发（macOS 专属）
-### 1. 准备打包环境
-确保虚拟环境已激活，且 `superpowers` 文件夹在项目根目录：
+## 📦 Packaging & Distribution (macOS Only)
+Package the project into a standalone executable file for distribution to other macOS devices.
+
+### 1. Prepare Packaging Environment
+Ensure your virtual environment is activated, and the `superpowers` folder is in the project root directory:
 ```bash
 source .venv/bin/activate
-ls -la superpowers  # 确认文件夹存在
+ls -la superpowers  # Verify the folder exists
 ```
 
-### 2. 执行打包
+### 2. Run Packaging Command
 ```bash
-# 安装 PyInstaller
+# Install PyInstaller
 pip install pyinstaller
 
-# 一键打包（包含主程序、superpowers、.env）
+# One-click packaging (includes main program, superpowers, and .env template)
 pyinstaller -F \
   --add-data "./superpowers:superpowers" \
   --add-data ".env:." \
   claude_service.py
 ```
 
-### 3. 交付文件
-打包完成后，将以下文件/文件夹一起分发：
+### 3. Deliverable Files
+After packaging is complete, distribute the following files/folders together:
 ```
-dist/claude_service  # 主程序（在 dist 目录）
-.env                  # 配置文件（需单独提供，保护 API Key）
-superpowers/          # 整个 superpowers 文件夹
+dist/claude_service  # Main executable (in the dist directory)
+.env                  # Environment configuration file (to be provided separately, protect your API Key)
+superpowers/          # Full superpowers folder
 ```
 
-### 4. 目标设备运行
-1. 将所有文件放在同一目录
-2. 确保目标设备已安装 Node.js（`node --version` 验证）
-3. 执行以下命令：
-   ```bash
-   # 赋予执行权限
-   chmod +x claude_service
-   
-   # 移除 macOS 隔离属性（如遇“无法打开”报错）
-   xattr -c claude_service
-   
-   # 运行
-   ./claude_service "你的任务 /skill-技能名"
-   ```
+### 4. Run on Target Device
+1.  Place all delivered files in the same directory on the target device
+2.  Ensure Node.js is installed on the target device (verify with `node --version`)
+3.  Run the following commands in terminal:
+    ```bash
+    # Grant execution permission
+    chmod +x claude_service
+
+    # Remove macOS quarantine attribute (if "cannot be opened" error occurs)
+    xattr -c claude_service
+
+    # Run the program
+    ./claude_service "your task /skill-skill-name"
+    ```
 
 ---
 
-## ❓ 常见问题
-### Q: 报错 `command not found: node`
-**A**: 目标设备未安装 Node.js，请前往 [nodejs.org](https://nodejs.org/) 下载安装。
+## ❓ FAQ
+### Q: `command not found: node` error when running
+**A**: Node.js is not installed on the target device. Please download and install it from [nodejs.org](https://nodejs.org/).
 
-### Q:  macOS 报错“无法打开，因为无法验证开发者”
-**A**: 执行 `xattr -c claude_service` 移除隔离属性，或在“系统设置 → 隐私与安全性”中允许运行。
+### Q: macOS error "cannot be opened because the developer cannot be verified"
+**A**: Run `xattr -c claude_service` to remove the quarantine attribute, or allow execution in **System Settings → Privacy & Security**.
 
-### Q: Token 统计显示为 0
-**A**: 因 SDK 限制，本项目未实现 Token 统计，精确消耗请查看第三方代理服务控制台。
+### Q: 403 Permission Denied when pushing to GitHub
+**A**: GitHub no longer supports password authentication for HTTPS pushes. You must use a **Personal Access Token (PAT)** with the `repo` scope enabled as your password.
 
----
-
-## 🤝 贡献指南
-欢迎提交 Issue 和 Pull Request！
-1. Fork 本仓库
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 开启 Pull Request
+### Q: No token consumption statistics displayed
+**A**: Token statistics are not implemented in this project due to SDK limitations. For accurate usage metrics, please check your third-party API proxy console.
 
 ---
 
-## 📄 许可证
-本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件。
+## 🤝 Contributing
+Contributions, issues, and pull requests are welcome!
+1.  Fork this repository
+2.  Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
+
+---
+
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
